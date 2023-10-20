@@ -21,7 +21,7 @@ func FindWindow(name string) (w32.HWND, error) {
 }
 
 // Screenshot will take a screenshot of the given windows handler
-func Screenshot(hWnd w32.HWND, filename string) error {
+func Screenshot(hWnd w32.HWND) *image.RGBA {
 	// Retrieve the handle to a display device context for the client window
 	hdcWindow := w32.GetWindowDC(hWnd)
 	defer w32.ReleaseDC(hWnd, hdcWindow)
@@ -69,14 +69,11 @@ func Screenshot(hWnd w32.HWND, filename string) error {
 			img.SetRGBA(x, y, color.RGBA{R: pixels[offset+2], G: pixels[offset+1], B: pixels[offset], A: 255})
 		}
 	}
-
-	// Save the image to a file name
-	err := saveImage(img, filename)
-	return err
+	return img
 }
 
-// saveImage saves the image to the specified file name
-func saveImage(img image.Image, filename string) error {
+// SaveImage saves the image to the specified file name
+func SaveImage(img image.Image, filename string) error {
 	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0777)
 	if err != nil {
 		return err
