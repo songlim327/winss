@@ -24,8 +24,12 @@ go get github.com/songlim327/winss
             log.Fatal(err)
         }
 
-        // Pass the handler and output filename as arguments
-        winss.Screenshot(handler, "./winss.png")
+        // Pass the handler as argument
+        img := winss.Screenshot(handler)
+
+        // Screenshot() will return *image.RGBA, pass it together with filename as arguments to SaveImage()
+        err := winss.SaveImage(img, "./winss.png")
+        return err
     }
 ```
 ## Sample Result 
